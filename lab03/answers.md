@@ -81,7 +81,8 @@ We've learned 6 git subcommands now. Describe each of them in your own words in 
 * git init
 This initializes a new repository
 * git status 
-This checks the status of git, it is best practice to check often the status
+This checks the status of git, you can see files that have been added and awating commits. 
+you can also see what branch youre currently on
 * git add 
 This adds a file to the git staging area to be committed
 * git commit 
