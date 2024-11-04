@@ -14,6 +14,21 @@ export function rps(hand1, hand2) {
     // finish this code:
     if (hand1 === "rock" && hand2 === "paper") {
         return "Paper wins!";
+    } else if (hand1 === "paper" && hand2 === "scissors") {
+        return "Scissors wins!";
+    } else if (hand1 === "scissors" && hand2 === "rock") {
+        return "Rock wins!";
+    } else if (hand1 === "rock" && hand2 === "scissors") {
+        return "Rock wins!";
+    } else if (hand1 === "scissors" && hand2 === "paper") {
+        return "Scissors wins!";
+    } else if (hand1 === "paper" && hand2 === "rock") {
+        return "Paper wins!";
+    } else if (
+        hand1 === hand2 &&
+        ["rock", "paper", "scissors"].includes(hand1)
+    ) {
+        return "Tie!";
     } else {
         return "Invalid";
     }
