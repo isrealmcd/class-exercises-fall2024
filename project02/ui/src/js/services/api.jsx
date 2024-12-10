@@ -4,13 +4,11 @@ const rootURL = "http://localhost:8000";
 export async function fetchUser(username) {
     // replace this code with functionality that actually
     // queries that correct endpoint:
-    return {
-        id: 18,
-        username: "svanwart",
-        email: "svanwart@unca.edu",
-        first_name: "Sarah",
-        last_name: "Van Wart",
-    };
+    const response = await fetch(`http://127.0.0.1:8000/api/users/${username}`);
+    if (!response.ok) {
+        throw new Error(`Error fetching user: ${response.statusText}`);
+    }
+    return response.json();
 }
 
 // React Task 3:
@@ -28,8 +26,20 @@ export async function fetchCourses(options = {}) {
     if (options.title) {
         baseURL += `title=${options.title}&`;
     }
-    console.log(baseURL);
+    if (options.classifications && options.classifications.length > 0) {
+        baseURL += `classifications=${options.classifications.join(",")}&`;
+    }
+    if (options.days && options.days.length > 0) {
+        baseURL += `days=${options.days.join(",")}&`;
+    }
+    if (options.open !== undefined) {
+        baseURL += `open=${options.open}&`;
+    }
+    console.log("Final URL:", baseURL);
     const response = await fetch(baseURL);
+    if (!response.ok) {
+        throw new Error(`Error fetching courses: ${response.statusText}`);
+    }
     const courses = await response.json();
     console.log(courses);
     return courses;

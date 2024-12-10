@@ -83,3 +83,7 @@ class User(BaseModel):
     email: str
     first_name: str
     last_name: str
+
+    # troubleshooting Fast API endpoint assignment
+    class Config:
+        orm_mode = True

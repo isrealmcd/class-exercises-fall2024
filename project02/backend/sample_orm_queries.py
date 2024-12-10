@@ -99,10 +99,12 @@ async def main():
     db = AsyncSessionLocal()
 
     # async function invocations go here:
-    await show_courses(db)
-    await show_courses_with_table_joins(db)
-    await print_schedules(db)
-
+    # ------------------------------------------------------------------
+    # calling my new functions
+    await print_usernames(db)
+    await print_unique_departments(db)
+    await print_open_cs_courses(db)
+    # ------------------------------------------------------------------
     await db.close()
 
 
@@ -114,11 +116,44 @@ if __name__ == "__main__":
 # ###################
 # # https://docs.sqlalchemy.org/en/14/orm/tutorial.html#querying
 
+
 # # Query all of the users:
 # query = select(User).order_by(User.id)
 # # users = session.execute(query)
 # users = session.scalars(query)
+# ------------------------------------------------------------------
+# function 1 print all usernames
+async def print_usernames(db):
+    query = select(User.username).order_by(User.id)
+    result = await db.execute(query)
+    usernames = result.scalars().all()
+    for username in usernames:
+        print(username)
 
+
+# ------------------------------------------------------------------
+# function 2 print unique departments
+async def print_unique_departments(db):
+    query = select(Course.department).distinct().order_by(Course.department)
+    result = await db.execute(query)
+    departments = result.scalars().all()
+    for department in departments:
+        print(department)
+
+
+# ------------------------------------------------------------------
+# Function 3: Print open CSCI courses
+async def print_open_cs_courses(db):
+    query = select(Course.crn, Course.title).where(
+        Course.department == "CSCI", Course.open == True
+    )
+    result = await db.execute(query)
+    courses = result.fetchall()
+    for crn, title in courses:
+        print(f"CRN: {crn}, Title: {title}")
+
+
+# ------------------------------------------------------------------
 # # Output all of the users using regular Python:
 # print(query)  # prints the SQL
 # for user in users:

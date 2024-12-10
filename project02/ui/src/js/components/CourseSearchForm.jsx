@@ -21,6 +21,30 @@ export default function CourseSearchForm({ fetchCourses }) {
         { key: "honors", value: "Honors" },
         { key: "service", value: "Service Learning" },
     ];
+    // State to store departments
+    const [departments, setDepartments] = useState([]);
+
+    // Fetch departments from the API when the component mounts
+    useEffect(() => {
+        async function fetchDepartments() {
+            try {
+                const response = await fetch(
+                    "http://127.0.0.1:8000/api/departments",
+                );
+                if (!response.ok) {
+                    throw new Error(
+                        `Error fetching departments: ${response.statusText}`,
+                    );
+                }
+                const data = await response.json();
+                setDepartments(data); // Update the state with the fetched departments
+            } catch (error) {
+                console.error("Failed to fetch departments:", error);
+            }
+        }
+
+        fetchDepartments();
+    }, []);
 
     const handleFormSubmit = (formData) => {
         console.log("Here's the form data:", formData);
@@ -70,7 +94,7 @@ export default function CourseSearchForm({ fetchCourses }) {
 
                     {/* Department */}
                     <Form.Item label="Department" name="department">
-                        <Select>
+                        <Select placeholder="Select a department">
                             <Select.Option value="">Any</Select.Option>
 
                             {/* React Task 2:
@@ -79,12 +103,11 @@ export default function CourseSearchForm({ fetchCourses }) {
                                 You will need to use the useEffect and useState React 
                                 functions. 
                             */}
-                            <Select.Option key="CSCI" value="CSCI">
-                                CSCI
-                            </Select.Option>
-                            <Select.Option key="NM" value="NM">
-                                NM
-                            </Select.Option>
+                            {departments.map((dept) => (
+                                <Select.Option key={dept} value={dept}>
+                                    {dept}
+                                </Select.Option>
+                            ))}
                         </Select>
                     </Form.Item>
 
